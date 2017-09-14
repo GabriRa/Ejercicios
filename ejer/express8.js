@@ -4,10 +4,10 @@ var fs = require("fs");
 var app = express();
 
 app.get("/books", (req, res) => {
-    fs.readFile(process.argv[3], (err, texto) => {
+    fs.readFile(process.argv[3], (err, texto) => { //Lee un texto 
         if (err) return console.log(err);
-        texto = JSON.parse(texto)
-        res.json(texto);
+        texto = JSON.parse(texto) //Cambiamos el formato
+        res.json(texto); //le decimos el tipo de formato
     })
 })
 
