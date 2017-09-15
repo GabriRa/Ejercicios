@@ -1,0 +1,14 @@
+body{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-flow: column nowrap;
+  height: 100%;
+  width: 100%;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif,
+}
+div.ejemplo a{
+  background-color: rgba(200, 0 ,0, 0.2);
+  text-decoration: none;
+  color: black;
+}
