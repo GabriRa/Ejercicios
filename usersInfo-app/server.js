@@ -4,6 +4,7 @@ var app = express();
 app.use(express.static('public'));
 
 app.get("/", (req, res) =>{
+  //req.headers
   let resultado = {
     ipAdress : req.headers["x-forwarded-for"].split(",")[0],
     language : req.headers["accept-language"].split(",")[0],
