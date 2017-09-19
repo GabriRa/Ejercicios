@@ -48,7 +48,8 @@ app.get("/api/url/:url", (req, res) => {
 							urlID : shortid.generate()		//Id unica y accesible para la url
 						}, (err, data) => { 
 							if (err) return console.log(err) 
-							res.end(`La url a sido almacenada y guardada. Accede a traves de minimi-url.com/url/${data.ops.urlID}`);
+							console.log(data.ops)
+							res.end(`La url a sido almacenada y guardada. Accede a traves de minimi-url.com/url/${data.ops[0].urlID}`);
 						}); // Final del insert
 						db.close();
 					}
