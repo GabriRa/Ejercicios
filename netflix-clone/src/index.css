@@ -1,0 +1,185 @@
+*{
+	box-sizing: border-box;
+	margin: 0;
+  	padding: 0;
+	text-decoration: none;
+}
+.fa{
+	transform: scale(1.3);
+}
+a{
+	color: black;
+}
+
+/*#################### Estilo de Partes ####################*/
+
+	/*####### Barra-Navegadora #######*/
+.barra-navegadora{
+	width: 100%;
+	height:50px;
+	border:1px solid black;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 2rem;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 3;
+}
+	.icono-principal{
+		width: 150px;
+		height: 100%;
+		border:1px solid red;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+	}
+
+	.icono-opciones{
+		width: 60px;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+	}
+
+	/*####### Menu Lateral #######*/
+.menu-lateral{
+	width: 200px;
+	height: calc(100% - 50px);
+	display: flex;
+	flex-flow: column nowrap;
+	position: fixed; 
+	top: 50px;
+	border: 1px solid green;
+	transition: transform 0.5s ease;
+	overflow: auto;
+	z-index: 3;
+}
+	.seccion-ml{
+		height: fit-content;
+		width: 100%;
+		display: flex;
+		flex-flow: column nowrap;
+		padding: 0.5rem 0px;
+		border: 1px solid green;
+	}
+		.btn-ml{
+			height: 40px;
+			padding-left: 2rem;
+			border-right: 3px solid rgba(0, 0, 0, 0);
+		}
+		.btn-ml:hover{
+			background-color: rgba(0,0,0,0.4);
+			border-right: 3px solid red;
+		}
+			.lnk-ml{
+				height: 100%;
+				width: 100%;
+				display: flex;
+				align-items: center;
+				font-size: 14pt;
+			}
+
+			/*Ajustes personalizados*/
+			.lnk-ml-listas{
+				display: flex;
+				justify-content: space-between;
+			}
+			.lnk-ml-listas span.icono-efecto-listas{
+				border-bottom: 2px solid black;
+				border-right: 2px solid black;
+				height: 15px;
+				width:15px;
+				transform: rotate(45deg) translateY(-10px);
+				margin-right: 2rem;
+				opacity: 0;
+				transition: opacity .4s ease; 
+			}
+			.btn-ml-listas:hover span.icono-efecto-listas{
+				opacity: 1;
+			}
+
+	/*####### Contenido #######*/
+.contedor-contenido{
+	position: relative;
+	height: fit-content;
+	width: calc(100% - 200px);
+	min-height: 100px;
+	top: 50px;
+	left: 200px;
+	transition: all .5s ease-in-out;
+}
+
+
+	/*####### Seleccion de Peliculas #######*/
+.contenedor-seleccion{
+	width: 100%;
+	overflow: hidden;
+	height: 300px;
+	border: 1px solid red;
+	position: relative;
+}
+	.titulo-seleccion{
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+	}
+	.boton-movimiento{
+		position: absolute;
+		width: 40px;
+		height: 40px;
+		right: 0px;
+		top: calc(50% - 20px);
+		z-index: 2;
+	}
+	.boton-movimiento.movimiento-izquierda{
+		left: 0px;
+		right: unset;
+	}
+	.peliculas-seleccion{
+		display: flex;
+		height: 100%;
+		width: fit-content;
+		transition: transform 0.5s ease;
+	}
+		.tarjeta-pelicula{
+			margin: 0.5rem 1rem;
+			width: 185px;
+			border: 1px solid black;
+			position: relative;
+		}
+			.poster-pelicula{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				z-index: -1;
+				overflow: hidden;
+			}
+				img.poster{
+					width: auto;
+					height: 100%;
+				}
+			.overlay-pelicula{
+				width: 100%;
+				height: 50%;
+				background-color: rgba(0,0,0,0.4);
+				position: relative;
+				top: 50%;
+				opacity: 0;
+				transition: opacity .5s ease-in-out;
+				display: flex;
+				justify-content: space-around;
+				flex-flow: column nowrap;
+				color: white;
+			}
+			.tarjeta-pelicula:hover .overlay-pelicula{
+				opacity: 1;
+			}
+	
+
+
+.efecto-menu-lateral{
+	width: 100%;
+	transform: translateX(-200px);
+}
