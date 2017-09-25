@@ -52,7 +52,7 @@ export default class MenuLateral extends Component{
                     
                     <div className="btn-ml btn-ml-portada">
                         <a className="lnk-ml lnk-ml-portada" href="/portada">
-                            Capitulos por ver
+                            Capitulos por ver aqui
                         </a>
                     </div>
                 </div>
