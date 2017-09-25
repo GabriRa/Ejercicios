@@ -2,9 +2,9 @@ import React, {Component} from "react";
 
 import SeleccionPeliculas from "./SeleccionPeliculas"
 
-// const queryMasPopulares = "https://api.themoviedb.org/3/movie/popular?api_key=3ce6bb07b9fd7cffed8d0e33c58c1b24";
-const queryMasVotadas = "https://api.themoviedb.org/3/discover/movie?api_key=3ce6bb07b9fd7cffed8d0e33c58c1b24&language=en-US&sort_by=vote_count.desc";
-const queryMasRentable = "https://api.themoviedb.org/3/discover/movie?api_key=3ce6bb07b9fd7cffed8d0e33c58c1b24&language=en-US&sort_by=revenue.desc";
+// const queryMasPopulares = "https://api.themoviedb.org/3/movie/popular?";
+const queryMasVotadas = "https://api.themoviedb.org/3/discover/movie?&language=en-US&sort_by=vote_count.desc";
+const queryMasRentable = "https://api.themoviedb.org/3/discover/movie?&language=en-US&sort_by=revenue.desc";
 const queryBase = "http://localhost:4000/api?categoria1=";
 // const queryMasPopulares = queryBase + "movie"
 
