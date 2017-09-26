@@ -12,7 +12,7 @@ export default class PeliculasInfo extends Component{
         super(props);
         this.state = {
             infoPelicula : {},
-
+            mostrarMenu : true
         }
         this.moverMenu = this.moverMenu.bind(this);
     }
