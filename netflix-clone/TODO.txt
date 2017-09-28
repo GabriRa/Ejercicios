@@ -1,1 +1,3 @@
 Hacerlo responsive
+Menu ajustes y usuario, al menos un menu on hover
+Fondos para todas las secciones
