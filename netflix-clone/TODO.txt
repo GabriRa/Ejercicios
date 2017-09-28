@@ -1,3 +1,5 @@
 Hacerlo responsive
 Menu ajustes y usuario, al menos un menu on hover
-Fondos para todas las secciones
+Fondos para las secciones
+Menu lateral arreglar links.
+Secciones de peliculas, dar estilo.
