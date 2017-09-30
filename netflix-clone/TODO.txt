@@ -1,4 +1,4 @@
-Hacerlo responsive
+Hacerlo responsive ultimo
 Menu ajustes y usuario, al menos un menu on hover
 Menu lateral arreglar links.
 Seccion de busqueda de peliculas.
