@@ -49,14 +49,21 @@ export default class SeleccionPeliculas extends Component{
         })
     }
 
+    efectoAparicion(e){
+        if(!this.props.datosCargando){
+            document.querySelector(`.seleccion-${this.props.categoriaSeleccion}`).classList.remove("efecto-aparicion");
+        }
+    }
+
     render(){
         //Efecto en caso de que este cagando, deberia crear un componente con react-content-loader
         if (this.props.datosCargando) {
-            return <SeleccionLoader/>
+            // return <SeleccionLoader/>
+            return null;
         } 
 
         return(
-            <div className={`contenedor-seleccion seleccion-${this.props.categoriaSeleccion}`}>
+            <div className={`contenedor-seleccion seleccion-${this.props.categoriaSeleccion} efecto-aparicion`} onLoad={ e => { this.efectoAparicion(e) }}>
 
                 {/*Titulillo de la seleccion/categoria*/}
                 <h3 className="titulo-seleccion" >{this.props.tituloSeleccion}</h3>
