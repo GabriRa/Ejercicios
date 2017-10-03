@@ -1,9 +1,72 @@
+require("dotenv").config();
 const express = require("express");
-const http = require("http");
 const path = require("path");
 const request = require("request");
 
 const app = express();
+
+//Cogemos la api key de una variable oculta o de un parametro dado
+const api_key = process.env.TMDB_KEY || process.argv[2];
+const url_api = "https://api.themoviedb.org/3";
+
+//Query especial para sacar estrenos
+const query_estrenos = `${url_api}/discover/movie?api_key=${api_key}&language=en-US&sort_by=primary_release_date.desc&include_adult=false&include_video=true&page=1&primary_release_date.lte=2017-9-10&vote_count.gte=100`;
+
+
+app.get("/api", (req, res) => {
+
+    //Lamada especial para estrenos
+    if(req.query.estrenos == "estrenos"){
+        request(query_estrenos, (err, response, body) => {
+            if (err) throw err;
+            res.end(body);
+        })
+    } 
+    //Todas las demas llamadas pasan a ser formateadas
+    else {
+
+        let busqueda = req.query; // creamos un objeto para almacenar la query
+
+        //Formatemos la url que usaremos
+        let urlBusqueda = `${url_api}/${busqueda.categoria1}/${busqueda.categoria2}?api_key=${api_key}`
+        // Añadimos alguna opcion en caso de haber
+        if(busqueda.opcion1){
+            urlBusqueda += `&language=en-US&sort_by=${busqueda.opcion1}`;
+        }
+
+        // Hacemos la llamada a la api
+        request(urlBusqueda, (err, response, body) => {
+            if (err) throw err;
+            if (res.statusCode == 200){
+                res.end(body);
+            }
+        })
+
+    }
+})
+
+app.get("/pelicula/:id", (req, res) => {
+    let idPelicula = req.params.id;
+    
+    let urlBusqueda = `${url_api}/movie/${idPelicula}?api_key=${api_key}`
+
+    request(urlBusqueda, (err, response, body) => {
+        if (err) throw err;
+        res.end(body);
+    })
+});
+
+app.get("/buscar/:busqueda", (req, res) => {
+    let busqueda = req.params.busqueda;
+
+    let urlBusqueda = `${url_api}/search/movie?api_key=${api_key}&language=en-US&query=${busqueda}&page=1&include_adult=false`
+
+    request(urlBusqueda, (err, response, body) => {
+        if (err) throw err;
+        console.log(urlBusqueda, "buscar");
+        res.end(body);
+    })
+})
 
 // Envia el build haciendo lo publico
 app.use(express.static(path.resolve(__dirname, "..", "build")));
@@ -14,6 +77,12 @@ app.get("/", (req, res) => {
 });
 
 
-app.listen(4000, () => {
-    console.log("Hola desde puerto 4000");
+
+// app.get("/api", (req, res) => {
+//     let id = req.query;
+//     res.end(JSON.stringify(id))
+// })
+
+app.listen(process.env.PORT || 5000 , () => {
+    console.log("Arreando");
 })
