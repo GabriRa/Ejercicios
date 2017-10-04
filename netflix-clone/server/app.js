@@ -8,6 +8,7 @@ const app = express();
 //Cogemos la api key de una variable oculta o de un parametro dado
 const api_key = process.env.TMDB_KEY || process.argv[2];
 const url_api = "https://api.themoviedb.org/3";
+const imdb_api = "http://www.theimdbapi.org/api/movie?movie_id=";
 
 //Query especial para sacar estrenos
 const query_estrenos = `${url_api}/discover/movie?api_key=${api_key}&language=en-US&sort_by=primary_release_date.desc&include_adult=false&include_video=true&page=1&primary_release_date.lte=2017-9-10&vote_count.gte=100`;
@@ -45,15 +46,32 @@ app.get("/api", (req, res) => {
     }
 })
 
-app.get("/pelicula/:id", (req, res) => {
+app.get("/pelicula/id/:id", (req, res) => {
+    let data = {};
+
     let idPelicula = req.params.id;
     
     let urlBusqueda = `${url_api}/movie/${idPelicula}?api_key=${api_key}`
 
     request(urlBusqueda, (err, response, body) => {
         if (err) throw err;
-        res.end(body);
+        data.tmbdAPI = JSON.parse(body);
+        //Pasamos los datos necesarios a nuestra funcion
+        recogerMasDatos(JSON.parse(body).imdb_id);
     })
+
+
+    //Recoge mas datos una vez se ha completado la primera llamada. Esto permite coger datos de la primera llamada y usarlos
+    //Para hacer la segunda
+    function recogerMasDatos(id){
+        request(imdb_api + id, (err, response, body) => {
+            if (err) throw err;
+            data.imdbAPI = JSON.parse(body);
+            res.end(JSON.stringify(data));
+        })
+    }
+
+
 });
 
 app.get("/buscar/:busqueda", (req, res) => {
@@ -72,7 +90,7 @@ app.get("/buscar/:busqueda", (req, res) => {
 app.use(express.static(path.resolve(__dirname, "..", "build")));
 
 //A cualquier llamada, devolver el index.html
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
 });
 
