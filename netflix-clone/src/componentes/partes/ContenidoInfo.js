@@ -1,74 +1,123 @@
 import React, {Component} from "react";
 
+const queryBase = "http://filnfo.herokuapp.com/pelicula/id/";
+
+
 export default class ContenidoInfo extends Component{
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            infoPelicula : {
+                tmbdAPI : {},
+                imdbAPI : {}
+            },
+            acabado: false,
+        }
+    }
+
+
+    componentDidMount(){
+        fetch(queryBase + this.props.match.params.peliculaID)
+            .then(response => response.json())
+            .then(data => this.setState({ infoPelicula : data , acabado : true}))
+    }
 
     // Hacer algo onload de imagenes y con los datos
 
-    componentDidMount(){
-        document.querySelector(".contenedor-imagen-fondo").style.backgroundImage = `url("https://image.tmdb.org/t/p/original${this.props.peliculaInfo.backdrop_path}")`;
-    }
-
     render(){
-        let aparecerMenu;
-        if (this.props.mostrarMenu){
-            aparecerMenu = "efecto-menu-lateral"
-        } else {
-            aparecerMenu = ""
-        } 
+
         let date = ["YYYY", "MM", "DD"];
         let genero = "";
-        if (this.props.peliculaInfo.id){
-            date = this.props.peliculaInfo.release_date.split("-");
-            genero = this.props.peliculaInfo.genres[0].name
+        if (this.state.infoPelicula.tmbdAPI.id){
+            date = this.state.infoPelicula.tmbdAPI.release_date.split("-");
+            genero = this.state.infoPelicula.tmbdAPI.genres[0].name
+        }
+
+        if(!this.state.infoPelicula.tmbdAPI.id){
+            return (
+                <section className={`contenedor-principal contenedor-`}>
+                    Estoy Cagando 
+                </section>
+            )
         }
 
         return(
-            <section className={`contenedor-principal contenedor-${this.props.padre} ${aparecerMenu}`}>
+            <section className={`contenedor-principal contenedor-`}>
+                <div className="pelicula-fondo-presentacion" style={{backgroundImage : `url("https://image.tmdb.org/t/p/original${this.state.infoPelicula.tmbdAPI.backdrop_path}")`}} >
+                    <div className="pelicula-presentacion">
 
-                <div className="contenedor-datos">
 
-                    <div className="info-pelicula">
-                        <div className="contenedor-info">
+                        <div className="presentacion-informacion">
 
-                            <div className="titulo-info">
-                                <h1>
-                                    {this.props.peliculaInfo.title} <span>({date[0]})</span>
-                                </h1>
-                                <div className="caracteristicas-pelicula">
-                                    {this.props.peliculaInfo.runtime/60} || {genero} || {date.join("/")}
+                            <div className="presentacion-titulo">
+                                {this.state.infoPelicula.tmbdAPI.title} <span>({this.state.infoPelicula.tmbdAPI.release_date.split("-")[0]})</span>
+                            </div>
+
+                            <div className="presentacion-caracteristicas">
+
+                                <div className="caracteristicas-puntuacion">
+                                    <div className="circulo-caracteristicas">
+                                        {this.state.infoPelicula.tmbdAPI.vote_average * 10}%
+                                    </div>
                                 </div>
+                                <div className="caracteristicas-imdb">
+                                    <div className="circulo-caracteristicas">
+                                        <a href={this.state.infoPelicula.imdbAPI.url.url}>
+                                            IMDB
+                                        </a>
+                                    </div>
+                                </div>
+                                <div className="caracteristicas-trailer">
+                                    <div className="circulo-caracteristicas">
+                                        <a href={this.state.infoPelicula.imdbAPI.trailer.length != 0 ? this.state.infoPelicula.imdbAPI.trailer[0].videoUrl : null}>
+                                            <i className="fa fa-play" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <p className="overview">
-                                {this.props.peliculaInfo.overview}
-                            </p>
-
-                            <div className="links-pelicula">
-                                <a href={`http://imdb.com/title/${this.props.peliculaInfo.imdb_id}/`}><p>Ver ficha en IMDB</p></a>
-                                <a href={this.props.peliculaInfo.homepage}><p> Pagina oficial </p></a>
-                            </div>
-                        </div>
-                    </div> {/*Fin informa cion de la pelicula*/}
-
-                    <div className="cartel-pelicula">
-                        <div className="imagen-cartel">
-                            <img src={`https://image.tmdb.org/t/p/w500${this.props.peliculaInfo.poster_path}`} alt=""/>
-                            <div className="puntuacion-pelicula">
+                            <div className="presentacion-overview">
+                                <h2>Overview</h2>
                                 <p>
-                                    {this.props.peliculaInfo.vote_average} 
+                                    {this.state.infoPelicula.tmbdAPI.overview.split(" ").slice(0, 70).join(" ") + "..."}
                                 </p>
                             </div>
+
+                            <div className="presentacion-equipo">
+
+                                <h2>Equipo Técnico</h2>
+
+                                <div className="equipo-tecnico">
+                                    <div className="equipo equipo-director">
+                                        <span className="equipo-categoria">Director</span>
+                                        <p>{this.state.infoPelicula.imdbAPI.director}</p>
+                                    </div>
+                                    <div className="equipo equipo-actores">
+                                        <span className="equipo-categoria">Actores</span>
+                                        {this.state.infoPelicula.imdbAPI.stars.map( actor => {
+                                            return <p>{actor}</p>
+                                        })}
+                                    </div>
+                                    <div className="equipo equipo-escritor">
+                                        <span className="equipo-categoria">Escritores</span>
+                                        {this.state.infoPelicula.imdbAPI.writers.map( escritor => {
+                                            return <p>{escritor}</p>
+                                        })}
+                                    </div>
+                                </div>
+
+                            </div>
+
                         </div>
-                    </div>{/*Fin cartel Pelicula*/}
+                        
+                        <div className="presentacion-poster">
+                            <img src={`https://image.tmdb.org/t/p/w500${this.state.infoPelicula.tmbdAPI.poster_path}`} alt=""/>
+                        </div>
 
-                </div> {/*Fin contenedor datos*/}
-
-                <div className="imagen-fondo">
-                    <div className="overlay"></div>
-                    <div className="contenedor-imagen-fondo"></div>
-                    {/*<img src={`https://image.tmdb.org/t/p/w780${this.props.peliculaInfo.backdrop_path}`} alt=""/>*/}
-                </div> {/*Fin Imagen de fondo*/}
-
+                    </div>
+                </div>
             </section>
         )
     }

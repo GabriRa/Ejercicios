@@ -7,7 +7,6 @@ const queryBase = "http://filnfo.herokuapp.com/api?categoria1=";
 const masPopulares = "movie&categoria2=popular";
 const masVotadas = "discover&categoria2=movie&opcion1=vote_count.desc";
 const masRentable = "discover&categoria2=movie&opcion1=revenue.desc";
-// const queryMasPopulares = queryBase + "movie"
 
 export default class Contenido extends Component{
     constructor(props){
@@ -84,29 +83,26 @@ export default class Contenido extends Component{
         }, 7000)
     }
 
-
     render(){
-        let aparecerMenu;
-        if (this.props.mostrarMenu){
-            aparecerMenu = "efecto-menu-lateral"
-        } else {
-            aparecerMenu = ""
-        } 
 
         let verModal;
         if (this.state.enseñarModal) {
-            verModal = <ModalPelicula infoPelicula={this.state.datosModal} quitarModal={this.quitarModal} efecto={aparecerMenu}/>
+            verModal = <ModalPelicula infoPelicula={this.state.datosModal} quitarModal={this.quitarModal}/>
         } else {
             verModal = null;
         }
 
 
-        let peliculasEstreno;
+        let peliculasEstreno = 
+            <div className="intro-peliculas-loader">
+                <i className="fa fa-spinner fa-3x" aria-hidden="true"></i>
+            </div>;
+
         if (this.state.infoEstrenos.length != 0){
             peliculasEstreno =
                 <div className="intro-peliculas">
                     <div className="fondo-intro" style={{backgroundImage : `url("https://image.tmdb.org/t/p/w1280${this.state.infoEstrenos[this.state.contador].backdrop_path}")`}}>
-                        <div className="contenido-intro">
+                        <div className="contenido-intro" >
                             
                             <div className="info-intro">
 
@@ -114,20 +110,20 @@ export default class Contenido extends Component{
                                     <h1>
                                         {this.state.infoEstrenos[this.state.contador].title} <span>({this.state.infoEstrenos[this.state.contador].release_date.split("-")[0]})</span>
                                     </h1>
-
-                                    <div className="puntuacion-intro">
-                                        Puntuacion en estrellas
-                                    </div>
                                 </div>
 
 
                                 <div className="button-intro">
-                                    boton para ficha personal 
+                                    <a href={`http://filnfo.herokuapp.com/pelicula/${this.state.infoEstrenos[this.state.contador].id}`}>
+                                        More info
+                                    </a>
                                 </div>
 
                                 <div className="overview-intro">
-                                    <h2>About</h2>
-                                    {this.state.infoEstrenos[this.state.contador].overview}
+                                    <h3>About</h3>
+                                    <p>
+                                        {this.state.infoEstrenos[this.state.contador].overview}
+                                    </p>
                                 </div>
 
                             </div>
@@ -144,7 +140,7 @@ export default class Contenido extends Component{
 
         return(
             //Le pasamos dos props como clases, una para saber el padre y poder difrenciarlo, y otra para el efecto del menu lateral
-            <section className={`contenedor-principal contenedor-contenido-${this.props.padre} ${aparecerMenu}`}>
+            <section className={`contenedor-principal contenedor-contenido-${this.props.padre}`}>
 
                 {peliculasEstreno}
 
@@ -158,25 +154,21 @@ export default class Contenido extends Component{
                                 tituloSeleccion={"Populares"}
                                 categoriaSeleccion={"populares"}
                                 datosSeleccion={this.state.masPopulares.results}
-                                datosCargando={this.state.cargandoMasPopulares}
-                                controlModal={this.controladorModal}/>
+                                datosCargando={this.state.cargandoMasPopulares}/>
 
                     <SeleccionPeliculas
                                 tituloSeleccion={"Votadas"} 
                                 categoriaSeleccion={"votadas"}
                                 datosSeleccion={this.state.masVotadas.results}
-                                datosCargando={this.state.cargandoMasVotadas}
-                                controlModal={this.controladorModal}/>
+                                datosCargando={this.state.cargandoMasVotadas}/>
 
                     <SeleccionPeliculas
                                 tituloSeleccion={"Rentables"} 
                                 categoriaSeleccion={"rentables"}
                                 datosSeleccion={this.state.masRentables.results}
-                                datosCargando={this.state.cargandoMasRentables}
-                                controlModal={this.controladorModal}/>
+                                datosCargando={this.state.cargandoMasRentables}/>
                 </div>
 
-                {verModal}
 
             </section>
         )
